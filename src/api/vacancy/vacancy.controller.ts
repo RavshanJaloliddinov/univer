@@ -11,7 +11,7 @@ import {
   ValidationPipe,
   ParseUUIDPipe,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { VacancyService } from './vacancy.service';
 import { CreateVacancyDto, UserDto } from './dto/create-vacancy.dto';
 import { UpdateVacancyDto } from './dto/update-vacancy.dto';
@@ -19,7 +19,7 @@ import { Public } from 'src/common/decorator/public';
 import { CurrentUser } from 'src/common/decorator/current-user';
 
 @ApiTags('Vacancies')
-@Public()
+@ApiBearerAuth('access-token')
 @Controller('vacancies')
 export class VacancyController {
   constructor(private readonly vacancyService: VacancyService) {}

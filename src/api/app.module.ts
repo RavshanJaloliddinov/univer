@@ -8,6 +8,9 @@ import { Vacancy } from 'src/entity/vacancy.entity';
 import { JwtStrategy } from 'src/common/users/AuthStrategy';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from 'src/common/users/AuthGuard';
+import { AuthModule } from './auth/auth.module';
+import { AdminModule } from './admin/admin.module';
+import { Admin } from 'src/entity/admin.entity';
 
 @Module({
   imports: [
@@ -15,13 +18,15 @@ import { JwtAuthGuard } from 'src/common/users/AuthGuard';
       type: 'postgres',
       url: config.DB_URL,
       synchronize: true,
-      entities: [Subscription, Vacancy],
+      entities: [Subscription, Vacancy, Admin],
       ssl: {
         rejectUnauthorized: false, 
       },
     }),
     VacancyModule, 
-    SubscriptionModule
+    SubscriptionModule, 
+    AuthModule,
+    AdminModule,
   ],
   providers: [
     JwtStrategy,
