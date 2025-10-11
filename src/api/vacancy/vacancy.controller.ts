@@ -50,6 +50,7 @@ export class VacancyController {
   }
 
   @Get(':id')
+  @Public()
   @ApiOperation({ summary: 'Bitta vakansiyani olish' })
   @ApiResponse({ status: HttpStatus.OK, description: 'Vakansiya topildi' })
   findOne(
