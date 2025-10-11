@@ -1,5 +1,5 @@
 import { BaseEntity } from 'src/common/database/BaseEntity';
-import { AdminRoles } from 'src/common/database/Enum';
+import { UserRoles } from 'src/common/database/Enum';
 import { Entity, PrimaryColumn, Column } from 'typeorm';
 
 @Entity()
@@ -14,7 +14,7 @@ export class Admin extends BaseEntity {
   @Column()
   password: string;
 
-  @Column({type: 'enum', enum: AdminRoles, default: AdminRoles.ADMIN})
-  role: AdminRoles;
+  @Column({type: 'enum', enum: UserRoles, default: UserRoles.ADMIN})
+  role: UserRoles;
 
 }

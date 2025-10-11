@@ -1,7 +1,7 @@
 import { SetMetadata } from '@nestjs/common';
-import { AdminRoles } from 'src/common/database/Enum';
+import { UserRoles } from 'src/common/database/Enum';
 
 export const ROLES_KEY = 'roles';
-export const RolesDecorator = (...roles: AdminRoles[]) => {
+export const RolesDecorator = (...roles: UserRoles[]) => {
     return SetMetadata(ROLES_KEY, roles);
 };

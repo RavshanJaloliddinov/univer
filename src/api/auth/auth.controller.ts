@@ -1,11 +1,11 @@
 // src/api/auth/auth.controller.ts
-import { Body, Controller, Post, Put } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiBody } from '@nestjs/swagger';
+import { BadRequestException, Body, Controller, Post, Put, UsePipes, ValidationPipe } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiBody, ApiConsumes } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { CreateAdminDto } from '../admin/dto/create-admin.dto';
 import { CurrentUser } from 'src/common/decorator/current-user';
 import { Public } from 'src/common/decorator/public';
-import { LoginDto } from './dto/login.dto';
+import { LoginDto, SendOtpDto, VerifyOtpDto } from './dto/login.dto';
 import { Admin } from 'src/entity/admin.entity';
 
 @ApiTags('Auth')
@@ -50,5 +50,23 @@ export class AuthController {
     @CurrentUser() admin: Admin,
   ) {
     return this.authService.forgetPassword(admin.email);
+  }
+
+  @Post('send-otp')
+  @ApiConsumes('application/json')
+  @ApiOperation({ summary: 'Foydalanuvchiga OTP yuborish' })
+  @ApiResponse({ status: 200, description: 'OTP muvaffaqiyatli yuborildi' })
+  @UsePipes(new ValidationPipe({ whitelist: true }))
+  async sendOtp(@Body() dto: SendOtpDto) {
+    return this.authService.sendOtp(dto.email);
+  }
+
+  @Post('verify-otp')
+  @ApiConsumes('application/json')
+  @ApiOperation({ summary: 'OTP ni tekshirish va token berish' })
+  @ApiResponse({ status: 200, description: 'OTP to‘g‘ri, token qaytarildi' })
+  @UsePipes(new ValidationPipe({ whitelist: true }))
+  async verifyOtp(@Body() dto: VerifyOtpDto) {
+    return this.authService.verifyOtp(dto.email, dto.otp);
   }
 }

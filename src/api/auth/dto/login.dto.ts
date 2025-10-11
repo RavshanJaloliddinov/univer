@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, IsString, MinLength, MaxLength, IsPhoneNumber, IsOptional } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString, MinLength, MaxLength, IsPhoneNumber, IsOptional, Length } from 'class-validator';
 
 export class LoginDto {
     @ApiProperty({
@@ -20,3 +20,26 @@ export class LoginDto {
     @IsNotEmpty({ message: 'Parol bo‘sh bo‘lishi mumkin emas' })
     password: string;
 }
+
+
+export class SendOtpDto {
+    @ApiProperty({ example: 'user@gmail.com', description: 'Foydalanuvchi email manzili' })
+    @IsEmail({}, { message: 'Email noto‘g‘ri formatda kiritilgan' })
+    @IsNotEmpty({ message: 'Email kiritilishi shart' })
+    email: string;
+}
+
+
+export class VerifyOtpDto {
+  @ApiProperty({ example: 'user@gmail.com', description: 'Foydalanuvchi email manzili' })
+  @IsEmail({}, { message: 'Email noto‘g‘ri formatda kiritilgan' })
+  @IsNotEmpty({ message: 'Email kiritilishi shart' })
+  email: string;
+
+  @ApiProperty({ example: '123456', description: 'Tasdiqlash kodi (OTP)' })
+  @IsString()
+  @Length(6, 6, { message: 'OTP 6 xonali bo‘lishi kerak' })
+  @IsNotEmpty({ message: 'OTP kiritilishi shart' })
+  otp: string;
+}
+

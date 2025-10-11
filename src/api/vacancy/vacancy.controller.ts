@@ -10,6 +10,7 @@ import {
   UsePipes,
   ValidationPipe,
   ParseUUIDPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { VacancyService } from './vacancy.service';
@@ -17,6 +18,9 @@ import { CreateVacancyDto, UserDto } from './dto/create-vacancy.dto';
 import { UpdateVacancyDto } from './dto/update-vacancy.dto';
 import { Public } from 'src/common/decorator/public';
 import { CurrentUser } from 'src/common/decorator/current-user';
+import { RolesDecorator } from 'src/common/roles/RolesDecorator';
+import { RolesGuard } from 'src/common/roles/RoleGuard';
+import { UserRoles } from 'src/common/database/Enum';
 
 @ApiTags('Vacancies')
 @Controller('vacancies')
@@ -25,6 +29,8 @@ export class VacancyController {
 
   @Post()
   @ApiBearerAuth('access-token')
+  @UseGuards(RolesGuard)
+  @RolesDecorator(UserRoles.ADMIN, UserRoles.SUPER_ADMIN)
   @ApiOperation({ summary: 'Yangi vakansiya yaratish' })
   @ApiResponse({ status: HttpStatus.CREATED, description: 'Vakansiya yaratildi' })
   @UsePipes(new ValidationPipe({ whitelist: true }))
@@ -45,6 +51,8 @@ export class VacancyController {
 
   @Get('/deleted')
   @ApiBearerAuth('access-token')
+  @UseGuards(RolesGuard)
+  @RolesDecorator(UserRoles.ADMIN, UserRoles.SUPER_ADMIN)
   @ApiOperation({ summary: "Barcha o‘chirilgan vakansiyalarni olish" })
   @ApiResponse({ status: HttpStatus.OK, description: "O‘chirilgan vakansiyalar ro‘yxati" })
   findAllDeleted() {
@@ -62,6 +70,9 @@ export class VacancyController {
   }
 
   @Put(':id')
+  @ApiBearerAuth('access-token')
+  @UseGuards(RolesGuard)
+  @RolesDecorator(UserRoles.ADMIN, UserRoles.SUPER_ADMIN)
   @ApiOperation({ summary: 'Vakansiyani yangilash' })
   @ApiResponse({ status: HttpStatus.OK, description: 'Vakansiya yangilandi' })
   @UsePipes(new ValidationPipe({ whitelist: true }))
@@ -74,6 +85,8 @@ export class VacancyController {
 
   @Delete(':id')
   @ApiBearerAuth('access-token')
+  @UseGuards(RolesGuard)
+  @RolesDecorator(UserRoles.ADMIN, UserRoles.SUPER_ADMIN)
   @ApiOperation({ summary: 'Vakansiyani o‘chirish' })
   @ApiResponse({ status: HttpStatus.OK, description: 'Vakansiya o‘chirildi' })
   remove(

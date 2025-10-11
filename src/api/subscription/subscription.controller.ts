@@ -35,7 +35,7 @@ export class SubscriptionController {
   constructor(private readonly subscriptionService: SubscriptionService) {}
 
   @Post()
-  @Public()
+  @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'Yangi subscription yaratish (PDF yuklash bilan)' })
   @ApiResponse({ status: HttpStatus.CREATED, description: 'Subscription yaratildi' })
   @ApiConsumes('multipart/form-data')
