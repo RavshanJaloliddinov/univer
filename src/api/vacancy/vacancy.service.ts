@@ -17,7 +17,6 @@
     ) {}
 
     async create(dto: CreateVacancyDto, user: UserDto) {
-      console.log(user)
       const vacancy = this.vacancyRepo.create({...dto, created_by: user.id});
       await this.vacancyRepo.save(vacancy);
       return {
@@ -78,6 +77,7 @@
       vacancy.deleted_at = new Date()
 
       await this.vacancyRepo.save(vacancy);
+      // await this.vacancyRepo.delete(id)
       return {  
         data: null,
         message: 'Vakansiya o‘chirildi',

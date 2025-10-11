@@ -1,6 +1,6 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, InternalServerErrorException } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
-import { join, extname } from 'path';
+import { join } from 'path';
 import { promises as fs } from 'fs';
 
 @Injectable()
@@ -8,53 +8,69 @@ export class FileService {
   private readonly uploadsFolder = join(process.cwd(), 'uploads');
 
   constructor() {
-    fs.mkdir(this.uploadsFolder, { recursive: true }).catch(() => null);
+    this.ensureUploadsFolder();
   }
 
-  async saveFile(file: Express.Multer.File): Promise<string> {
+  private async ensureUploadsFolder(): Promise<void> {
+    await fs.mkdir(this.uploadsFolder, { recursive: true });
+  }
+
+  async savePdf(file: Express.Multer.File): Promise<string> {
     try {
-      // Faqat PDF fayllarga ruxsat
-      const fileExtension = extname(file.originalname).toLowerCase();
-      if (fileExtension !== '.pdf' || file.mimetype !== 'application/pdf') {
+      if (!file || file.mimetype !== 'application/pdf') {
         throw new BadRequestException('Faqat PDF fayl yuklashga ruxsat beriladi');
       }
-
-      await fs.mkdir(this.uploadsFolder, { recursive: true });
-
-      const fileName = `${uuidv4()}${fileExtension}`;
+  
+      const safeName = file.originalname.replace(/[^a-zA-Z0-9_.-]/g, '_');
+      const fileName = `${uuidv4()}_${safeName}`;
       const filePath = join(this.uploadsFolder, fileName);
-
+  
       await fs.writeFile(filePath, file.buffer);
-
       return fileName;
     } catch (error) {
-      throw new BadRequestException(`Faylni saqlashda xatolik: ${error.message}`);
+      console.error('Fayl saqlash xatosi:', error);
+      if (error instanceof BadRequestException) throw error;
+      throw new InternalServerErrorException('PDF faylni saqlashda xatolik yuz berdi');
     }
   }
+  
 
+
+  // // ✅ Rasm faylni saqlash
+  // async saveImage(file: Express.Multer.File): Promise<string> {
+  //   try {
+  //     const fileTypeModule: any = await import('file-type');
+  //     const fileType = await fileTypeModule.fromBuffer(file.buffer);
+
+  //     if (!fileType || !fileType.mime.startsWith('image/')) {
+  //       throw new BadRequestException('Faqat rasm fayllarini yuklashga ruxsat beriladi (jpg, png, jpeg, webp)');
+  //     }
+
+  //     const extension = fileType.ext || 'jpg';
+  //     const safeName = file.originalname.replace(/[^a-zA-Z0-9_.-]/g, '_');
+  //     const fileName = `${uuidv4()}_${safeName}.${extension}`;
+  //     const filePath = join(this.uploadsFolder, fileName);
+
+  //     await fs.writeFile(filePath, file.buffer);
+  //     return fileName;
+  //   } catch (error) {
+  //     if (error instanceof BadRequestException) throw error;
+  //     throw new InternalServerErrorException('Rasmni saqlashda xatolik yuz berdi');
+  //   }
+  // }
+
+  // ✅ Faylni o‘chirish (PDF yoki rasm uchun umumiy)
   async deleteFile(fileName: string): Promise<void> {
     try {
       const filePath = join(this.uploadsFolder, fileName);
-
-      if (!(await this.fileExists(filePath))) {
-        throw new BadRequestException('Fayl topilmadi');
-      }
-
-      await fs.unlink(filePath);
-    } catch (error) {
-      if (error instanceof BadRequestException) {
-        throw error;
-      }
-      throw new BadRequestException('Faylni o‘chirishda xatolik yuz berdi');
+      await fs.rm(filePath, { force: true });
+    } catch {
+      throw new InternalServerErrorException('Faylni o‘chirishda xatolik yuz berdi');
     }
   }
 
-  private async fileExists(filePath: string): Promise<boolean> {
-    try {
-      await fs.access(filePath);
-      return true;
-    } catch {
-      return false;
-    }
+  // ✅ Fayl URL olish
+  getFileUrl(fileName: string): string {
+    return `${process.env.BASE_URL || 'http://localhost:3000'}/uploads/${fileName}`;
   }
 }

@@ -32,7 +32,7 @@ export class Subscription extends BaseEntity{
   email: string;
 
   @Column({ length: 255 })
-  yonalish: string;
+  major: string;
 
   @ManyToOne(() => Vacancy, (vacancy) => vacancy.subscriptions, { onDelete: 'CASCADE' })
   vacancy: Vacancy;

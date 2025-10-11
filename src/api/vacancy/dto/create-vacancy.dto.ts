@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator';
 
 export class CreateVacancyDto {
   @ApiProperty({ example: 'Backend Developer' })
@@ -24,12 +24,12 @@ export class CreateVacancyDto {
 
   @ApiProperty({ example: '2 yil tajriba' })
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   experience: string;
 
   @ApiProperty({ example: 'TypeScript, NestJS, PostgreSQL' })
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   requirement: string;
 }
 export class UserDto {

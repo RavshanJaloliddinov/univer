@@ -14,7 +14,7 @@ export class Application {
     // app.useGlobalFilters(new AllExceptionFilter());
     app.enableCors({ origin: "*" });
 
-    app.use("/images", express.static(join(process.cwd(), "uploads")));
+    app.use("/files", express.static(join(process.cwd(), "uploads")));
 
     const swagger = new DocumentBuilder()
       .setTitle('Vacany backend')
