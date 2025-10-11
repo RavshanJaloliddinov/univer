@@ -20,11 +20,17 @@ export class FileService {
       if (!file || file.mimetype !== 'application/pdf') {
         throw new BadRequestException('Faqat PDF fayl yuklashga ruxsat beriladi');
       }
-  
+
+      // ✅ 10 MB = 10 * 1024 * 1024 bayt
+      const MAX_SIZE = 10 * 1024 * 1024;
+      if (file.size > MAX_SIZE) {
+        throw new BadRequestException('Fayl hajmi 10 MB dan oshmasligi kerak');
+      }
+
       const safeName = file.originalname.replace(/[^a-zA-Z0-9_.-]/g, '_');
       const fileName = `${uuidv4()}_${safeName}`;
       const filePath = join(this.uploadsFolder, fileName);
-  
+
       await fs.writeFile(filePath, file.buffer);
       return fileName;
     } catch (error) {
@@ -33,8 +39,6 @@ export class FileService {
       throw new InternalServerErrorException('PDF faylni saqlashda xatolik yuz berdi');
     }
   }
-  
-
 
   // // ✅ Rasm faylni saqlash
   // async saveImage(file: Express.Multer.File): Promise<string> {

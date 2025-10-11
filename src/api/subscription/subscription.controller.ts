@@ -49,7 +49,7 @@ export class SubscriptionController {
         gender: { type: 'string', enum: ['male', 'female'] },
         phone: { type: 'string', example: '+998901112233' },
         email: { type: 'string', example: 'ali@gmail.com' },
-        yonalish: { type: 'string', example: 'Backend yo‘nalishi' },
+        major: { type: 'string', example: 'Backend yo‘nalishi' },
         vacansy_id: { type: 'string', format: 'uuid' },
         file: { type: 'string', format: 'binary' },
       },
