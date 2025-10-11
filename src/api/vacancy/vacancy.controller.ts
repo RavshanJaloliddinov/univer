@@ -19,12 +19,12 @@ import { Public } from 'src/common/decorator/public';
 import { CurrentUser } from 'src/common/decorator/current-user';
 
 @ApiTags('Vacancies')
-@ApiBearerAuth('access-token')
 @Controller('vacancies')
 export class VacancyController {
   constructor(private readonly vacancyService: VacancyService) {}
 
   @Post()
+  @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'Yangi vakansiya yaratish' })
   @ApiResponse({ status: HttpStatus.CREATED, description: 'Vakansiya yaratildi' })
   @UsePipes(new ValidationPipe({ whitelist: true }))
@@ -36,6 +36,7 @@ export class VacancyController {
   }
 
   @Get()
+  @Public()
   @ApiOperation({ summary: 'Barcha vakansiyalarni olish' })
   @ApiResponse({ status: HttpStatus.OK, description: 'Vakansiyalar ro‘yxati' })
   findAll() {
@@ -43,6 +44,7 @@ export class VacancyController {
   }
 
   @Get('/deleted')
+  @ApiBearerAuth('access-token')
   @ApiOperation({ summary: "Barcha o‘chirilgan vakansiyalarni olish" })
   @ApiResponse({ status: HttpStatus.OK, description: "O‘chirilgan vakansiyalar ro‘yxati" })
   findAllDeleted() {
@@ -71,6 +73,7 @@ export class VacancyController {
   }
 
   @Delete(':id')
+  @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'Vakansiyani o‘chirish' })
   @ApiResponse({ status: HttpStatus.OK, description: 'Vakansiya o‘chirildi' })
   remove(
