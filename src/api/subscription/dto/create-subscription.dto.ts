@@ -27,11 +27,6 @@ export class CreateSubscriptionDto {
   @IsNotEmpty()
   phone: string;
 
-  @ApiProperty({ example: 'ali@gmail.com' })
-  @IsEmail()
-  @IsNotEmpty()
-  email: string;
-
   @ApiProperty({ example: 'Backend yo‘nalishi' })
   @IsString()
   @IsNotEmpty()
