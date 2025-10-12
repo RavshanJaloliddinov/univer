@@ -58,8 +58,9 @@ export class SubscriptionController {
   create(
     @Body() dto: CreateSubscriptionDto,
     @UploadedFile() file: Express.Multer.File,
+    @CurrentUser() user: UserDto,
   ) {
-    return this.subscriptionService.create(dto, file);
+    return this.subscriptionService.create(dto, file, user);
   }
   
 

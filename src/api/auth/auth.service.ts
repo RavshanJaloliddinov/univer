@@ -80,13 +80,15 @@ export class AuthService {
 
     // 📧 Email yuborish
     const transporter = createTransport({
-      service: 'gmail',
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true,
       auth: {
         user: config.EMAIL,
         pass: config.EMAIL_PASSWORD,
       },
     });
-
+    
     await transporter.sendMail({
       from: `"Support" <${config.EMAIL}>`,
       to: email,
