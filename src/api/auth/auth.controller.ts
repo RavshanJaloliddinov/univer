@@ -14,13 +14,13 @@ import { Admin } from 'src/entity/admin.entity';
 export class AuthController {
   constructor(private readonly authService: AuthService) { }
 
-  @Post('register/admin')
-  @ApiOperation({ summary: 'Adminni ro‘yxatdan o‘tkazish' })
-  @ApiResponse({ status: 201, description: 'Admin muvaffaqiyatli ro‘yxatdan o‘tdi' })
-  @ApiResponse({ status: 400, description: 'Bunday email allaqachon mavjud' })
-  async register(@Body() dto: CreateAdminDto) {
-    return this.authService.register(dto);
-  }
+  // @Post('register/admin')
+  // @ApiOperation({ summary: 'Adminni ro‘yxatdan o‘tkazish' })
+  // @ApiResponse({ status: 201, description: 'Admin muvaffaqiyatli ro‘yxatdan o‘tdi' })
+  // @ApiResponse({ status: 400, description: 'Bunday email allaqachon mavjud' })
+  // async register(@Body() dto: CreateAdminDto) {
+  //   return this.authService.register(dto);
+  // }
 
   @Post('login/admin')
   @ApiOperation({ summary: 'Admin login qilish' })
@@ -30,43 +30,43 @@ export class AuthController {
     return this.authService.login(dto.email, dto.password);
   }
 
-  @Put('update-password')
-  @ApiBearerAuth() 
-  @ApiOperation({ summary: 'Parolni yangilash' })
-  @ApiResponse({ status: 200, description: 'Parol muvaffaqiyatli yangilandi' })
-  @ApiResponse({ status: 400, description: 'Eski parol noto‘g‘ri' })
-  async updatePassword(
-    @Body() body: { oldPass: string; newPass: string },
-    @CurrentUser() admin: Admin,
-  ) {
-    return this.authService.updatePassword(admin.email, body.oldPass, body.newPass);
-  }
+  // @Put('update-password')
+  // @ApiBearerAuth() 
+  // @ApiOperation({ summary: 'Parolni yangilash' })
+  // @ApiResponse({ status: 200, description: 'Parol muvaffaqiyatli yangilandi' })
+  // @ApiResponse({ status: 400, description: 'Eski parol noto‘g‘ri' })
+  // async updatePassword(
+  //   @Body() body: { oldPass: string; newPass: string },
+  //   @CurrentUser() admin: Admin,
+  // ) {
+  //   return this.authService.updatePassword(admin.email, body.oldPass, body.newPass);
+  // }
 
-  @Post('forget-password')
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Parolni tiklash' })
-  @ApiResponse({ status: 200, description: 'Parol tiklash jarayoni boshlandi (emailga yuboriladi)' })
-  async forgetPassword(
-    @CurrentUser() admin: Admin,
-  ) {
-    return this.authService.forgetPassword(admin.email);
-  }
+  // @Post('forget-password')
+  // @ApiBearerAuth()
+  // @ApiOperation({ summary: 'Parolni tiklash' })
+  // @ApiResponse({ status: 200, description: 'Parol tiklash jarayoni boshlandi (emailga yuboriladi)' })
+  // async forgetPassword(
+  //   @CurrentUser() admin: Admin,
+  // ) {
+  //   return this.authService.forgetPassword(admin.email);
+  // }
 
-  @Post('send-otp')
-  @ApiConsumes('application/json')
-  @ApiOperation({ summary: 'Foydalanuvchiga OTP yuborish' })
-  @ApiResponse({ status: 200, description: 'OTP muvaffaqiyatli yuborildi' })
-  @UsePipes(new ValidationPipe({ whitelist: true }))
-  async sendOtp(@Body() dto: SendOtpDto) {
-    return this.authService.sendOtp(dto.email);
-  }
+  // @Post('send-otp')
+  // @ApiConsumes('application/json')
+  // @ApiOperation({ summary: 'Foydalanuvchiga OTP yuborish' })
+  // @ApiResponse({ status: 200, description: 'OTP muvaffaqiyatli yuborildi' })
+  // @UsePipes(new ValidationPipe({ whitelist: true }))
+  // async sendOtp(@Body() dto: SendOtpDto) {
+  //   return this.authService.sendOtp(dto.email);
+  // }
 
-  @Post('verify-otp')
-  @ApiConsumes('application/json')
-  @ApiOperation({ summary: 'OTP ni tekshirish va token berish' })
-  @ApiResponse({ status: 200, description: 'OTP to‘g‘ri, token qaytarildi' })
-  @UsePipes(new ValidationPipe({ whitelist: true }))
-  async verifyOtp(@Body() dto: VerifyOtpDto) {
-    return this.authService.verifyOtp(dto.email, dto.otp);
-  }
+  // @Post('verify-otp')
+  // @ApiConsumes('application/json')
+  // @ApiOperation({ summary: 'OTP ni tekshirish va token berish' })
+  // @ApiResponse({ status: 200, description: 'OTP to‘g‘ri, token qaytarildi' })
+  // @UsePipes(new ValidationPipe({ whitelist: true }))
+  // async verifyOtp(@Body() dto: VerifyOtpDto) {
+  //   return this.authService.verifyOtp(dto.email, dto.otp);
+  // }
 }

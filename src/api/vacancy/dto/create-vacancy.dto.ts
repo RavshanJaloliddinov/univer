@@ -17,11 +17,6 @@ export class CreateVacancyDto {
   @IsNotEmpty()
   location: string;
 
-  @ApiProperty({ example: 'uploads/vacancy1.jpg' })
-  @IsString()
-  @IsNotEmpty()
-  image: string;
-
   @ApiProperty({ example: '2 yil tajriba' })
   @IsString()
   @IsOptional()

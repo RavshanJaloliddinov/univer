@@ -35,7 +35,8 @@ export class SubscriptionController {
   constructor(private readonly subscriptionService: SubscriptionService) {}
 
   @Post()
-  @ApiBearerAuth('access-token')
+  // @ApiBearerAuth('access-token')
+  @Public()
   @ApiOperation({ summary: 'Yangi subscription yaratish (PDF yuklash bilan)' })
   @ApiResponse({ status: HttpStatus.CREATED, description: 'Subscription yaratildi' })
   @ApiConsumes('multipart/form-data')
@@ -58,9 +59,9 @@ export class SubscriptionController {
   create(
     @Body() dto: CreateSubscriptionDto,
     @UploadedFile() file: Express.Multer.File,
-    @CurrentUser() user: UserDto,
+    // @CurrentUser() user: UserDto,
   ) {
-    return this.subscriptionService.create(dto, file, user);
+    return this.subscriptionService.create(dto, file);
   }
   
 

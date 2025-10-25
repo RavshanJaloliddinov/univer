@@ -24,7 +24,7 @@ export class SubscriptionService {
     private readonly fileService: FileService,
   ) {}
 
-  async create(dto: CreateSubscriptionDto, file?: Express.Multer.File, user?: UserDto) {
+  async create(dto: CreateSubscriptionDto, file?: Express.Multer.File) {
     const vacancy = await this.vacancyRepo.findOne({
       where: { id: dto.vacansy_id, is_deleted: false, is_active: true },
     });
@@ -39,7 +39,6 @@ export class SubscriptionService {
 
     const subscription = this.subscriptionRepo.create({
       ...dto,
-      email: user?.email,
       resume_file: fileName,
       vacancy,
     });

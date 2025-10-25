@@ -16,12 +16,12 @@ export class Application {
 
     app.use("/files", express.static(join(process.cwd(), "uploads")));
 
-    const swagger = new DocumentBuilder()
+    const swagger = new DocumentBuilder() 
       .setTitle('Vacany backend')
       .setDescription('11')
-      .setVersion('1.0')
+      .setVersion('1.0') 
       .addBearerAuth(
-        {
+        { 
           type: 'http',
           scheme: 'bearer',
           bearerFormat: 'JWT'
