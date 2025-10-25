@@ -34,6 +34,7 @@ export class SubscriptionService {
       `https://www.google.com/recaptcha/api/siteverify?secret=${secret}&response=${dto.captcha}`
     );
 
+    console.log(captchaResponse.data.score)
     if (!captchaResponse.data.success || captchaResponse.data.score < 0.5) {
       throw new BadRequestException('Captcha verification failed');
     }
