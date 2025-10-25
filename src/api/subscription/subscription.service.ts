@@ -12,6 +12,9 @@ import { Vacancy } from 'src/entity/vacancy.entity';
 import { Subscription } from 'src/entity/subscription.entity';
 import { UserDto } from '../vacancy/dto/create-vacancy.dto';
 import { FileService } from 'src/infrastructure/file';
+import axios from 'axios';
+import { config } from 'src/config';
+
 @Injectable()
 export class SubscriptionService {
   constructor(
@@ -25,18 +28,32 @@ export class SubscriptionService {
   ) {}
 
   async create(dto: CreateSubscriptionDto, file?: Express.Multer.File) {
+    // 1️⃣ CAPTCHA tekshiruvi
+    const secret = config.RECAPTCHA_SECRET_KEY;
+    const captchaResponse = await axios.post(
+      `https://www.google.com/recaptcha/api/siteverify?secret=${secret}&response=${dto.captcha}`
+    );
+
+    if (!captchaResponse.data.success || captchaResponse.data.score < 0.5) {
+      throw new BadRequestException('Captcha verification failed');
+    }
+
+    // 2️⃣ Vakansiyani tekshirish
     const vacancy = await this.vacancyRepo.findOne({
       where: { id: dto.vacansy_id, is_deleted: false, is_active: true },
     });
     if (!vacancy) throw new NotFoundException('Bunday vakansiya topilmadi');
 
+    // 3️⃣ Fayl mavjudligini tekshirish
     if (!file) {
       throw new BadRequestException('Rezyume (PDF) fayl majburiy');
     }
 
+    // 4️⃣ Faylni saqlash
     const fileName = await this.fileService.savePdf(file);
     const fileUrl = this.fileService.getFileUrl(fileName);
 
+    // 5️⃣ Subscription yaratish va saqlash
     const subscription = this.subscriptionRepo.create({
       ...dto,
       resume_file: fileName,
@@ -44,6 +61,8 @@ export class SubscriptionService {
     });
 
     await this.subscriptionRepo.save(subscription);
+
+    // 6️⃣ Javob qaytarish
     return {
       data: subscription,
       message: 'Subscription muvaffaqiyatli yaratildi',

@@ -53,6 +53,7 @@ export class SubscriptionController {
         major: { type: 'string', example: 'Backend yo‘nalishi' },
         vacansy_id: { type: 'string', format: 'uuid' },
         file: { type: 'string', format: 'binary' },
+        captcha: { type: 'string' },
       },
     },
   })

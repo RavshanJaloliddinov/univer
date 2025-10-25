@@ -11,6 +11,7 @@ export type ConfigType = {
     ACCESS_TOKEN_SECRET_KEY: string;
     ACCESS_TOKEN_EXPIRED_TIME: string;
     RESEND_API_KEY: string;
+    RECAPTCHA_SECRET_KEY: string;
 }
 
 const requiredVariables = [
@@ -22,6 +23,7 @@ const requiredVariables = [
     'ACCESS_TOKEN_SECRET_KEY',
     'ACCESS_TOKEN_EXPIRED_TIME',
     'RESEND_API_KEY',
+    'RECAPTCHA_SECRET_KEY'
 ]
 
 const missingVariables = requiredVariables.filter((variable => {
@@ -44,4 +46,5 @@ export const config: ConfigType = {
     ACCESS_TOKEN_SECRET_KEY: process.env.ACCESS_TOKEN_SECRET_KEY!,
     ACCESS_TOKEN_EXPIRED_TIME: process.env.ACCESS_TOKEN_EXPIRED_TIME!,
     RESEND_API_KEY: process.env.RESEND_API_KEY!,
+    RECAPTCHA_SECRET_KEY: process.env.RECAPTCHA_SECRET_KEY!,
 }

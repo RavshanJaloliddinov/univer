@@ -39,4 +39,8 @@ export class CreateSubscriptionDto {
   @IsUUID()
   @IsNotEmpty()
   vacansy_id: string;
+
+  @IsString()
+  @IsNotEmpty()
+  captcha: string;
 }
