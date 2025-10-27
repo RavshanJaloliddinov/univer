@@ -5,6 +5,7 @@ import { CreateAdminDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
 import * as bcrypt from 'bcrypt';
 import { Admin } from 'src/entity/admin.entity';
+import { UserRoles } from 'src/common/database/Enum';
 
 @Injectable()
 export class AdminService {
@@ -15,7 +16,7 @@ export class AdminService {
 
   async create(dto: CreateAdminDto) {
 
-    const exist = await this.adminRepo.findOne({ where: { email: dto.email } });
+    const exist = await this.adminRepo.findOne({ where: { email: dto.email, role: UserRoles.ADMIN } });
     if (exist) {
       throw new BadRequestException('Email already exists');
     }
@@ -51,9 +52,14 @@ export class AdminService {
   }
 
   async update(email: string, dto: UpdateAdminDto) {
-    const admin = await this.adminRepo.findOne({ where: { email } });
+    const admin = await this.adminRepo.findOne({ where: { email, role: UserRoles.ADMIN } });
     if (!admin) throw new NotFoundException('Admin not found');
 
+    if (dto.password) {
+      const hashPass = await bcrypt.hash(dto.password, 10);
+      dto.password = hashPass;
+    }
+    
     Object.assign(admin, dto);
     const savedAdmin = await this.adminRepo.save(admin);
 
@@ -65,7 +71,7 @@ export class AdminService {
   }
 
   async remove(email: string) {
-    const admin = await this.adminRepo.findOne({ where: { email } });
+    const admin = await this.adminRepo.findOne({ where: { email, role: UserRoles.ADMIN } });
     if (!admin) throw new NotFoundException('Admin not found');
 
     await this.adminRepo.remove(admin);
