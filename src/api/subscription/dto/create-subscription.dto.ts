@@ -1,5 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsNotEmpty, IsString, IsUUID, IsEmail, IsOptional } from 'class-validator';
+import {
+  IsEnum,
+  IsNotEmpty,
+  IsString,
+  IsUUID,
+  IsEmail,
+  IsOptional,
+} from 'class-validator';
 import { Gender } from 'src/entity/subscription.entity';
 
 export class CreateSubscriptionDto {
@@ -8,16 +15,16 @@ export class CreateSubscriptionDto {
   @IsNotEmpty()
   fullName: string;
 
-  @ApiProperty({ example: '25' })
+  @ApiProperty({ example: '25', required: false })
   @IsString()
-  @IsNotEmpty()
-  age: string;
+  @IsOptional()
+  age?: string;
 
   @ApiProperty({ example: 'male', enum: Gender })
   @IsEnum(Gender)
   gender: Gender;
 
-  @ApiProperty({ example: 'uploads/resume_ali.pdf' })
+  @ApiProperty({ example: 'uploads/resume_ali.pdf', required: false })
   @IsOptional()
   @IsString()
   resume_file?: string;
@@ -27,15 +34,15 @@ export class CreateSubscriptionDto {
   @IsNotEmpty()
   phone: string;
 
-  @ApiProperty({ example: 'jaloliddinov009@gmail.com' })
+  @ApiProperty({ example: 'jaloliddinov009@gmail.com', required: false })
   @IsEmail()
-  @IsNotEmpty()
-  email: string;
+  @IsOptional()
+  email?: string;
 
-  @ApiProperty({ example: 'Backend yo‘nalishi' })
+  @ApiProperty({ example: 'Backend yo‘nalishi', required: false })
   @IsString()
-  @IsNotEmpty()
-  major: string;
+  @IsOptional()
+  major?: string;
 
   @ApiProperty({
     example: 'b2a1f39e-6b6f-4f0f-bd2d-8d2d0f87e1e9',
