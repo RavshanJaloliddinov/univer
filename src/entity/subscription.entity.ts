@@ -8,13 +8,13 @@ export enum Gender {
 }
 
 @Entity('subscription')
-export class Subscription extends BaseEntity{
+export class Subscription extends BaseEntity {
 
   @Column({ length: 255 })
   fullName: string;
 
-  @Column({ length: 255 })
-  age: string;
+  @Column({ length: 255, nullable: true })
+  age?: string;
 
   @Column({
     type: 'enum',
@@ -28,11 +28,11 @@ export class Subscription extends BaseEntity{
   @Column({ length: 255 })
   phone: string;
 
-  @Column({ length: 255 })
-  email: string;
+  @Column({ length: 255, nullable: true })
+  email?: string;
 
-  @Column({ length: 255 })
-  major: string;
+  @Column({ length: 255, nullable: true })
+  major?: string;
 
   @ManyToOne(() => Vacancy, (vacancy) => vacancy.subscriptions, { onDelete: 'CASCADE' })
   vacancy: Vacancy;
