@@ -20,10 +20,6 @@ export class CreateSubscriptionDto {
   @IsOptional()
   age?: string;
 
-  @ApiProperty({ example: 'male', enum: Gender })
-  @IsEnum(Gender)
-  gender: Gender;
-
   @ApiProperty({ example: 'uploads/resume_ali.pdf', required: false })
   @IsOptional()
   @IsString()
