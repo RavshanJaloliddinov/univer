@@ -14,7 +14,7 @@ export class CreateVacancyDto {
 
   @ApiProperty({ example: 'Toshkent, Uzbekistan' })
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   location: string;
 
   @ApiProperty({ example: '2 yil tajriba' })
