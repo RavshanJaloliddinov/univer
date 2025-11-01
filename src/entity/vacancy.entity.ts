@@ -11,9 +11,8 @@ export class Vacancy extends BaseEntity{
   @Column({ type: 'text' })
   description: string;
 
-  @Column({ length: 255 })
+  @Column({ length: 255, nullable: true })
   location: string;
-
 
   @Column({ length: 255 , nullable: true })
   experience: string;
