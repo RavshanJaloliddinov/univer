@@ -23,8 +23,8 @@ export class Subscription extends BaseEntity {
   })
   gender?: Gender;
 
-  @Column({ length: 255 })
-  resume_file: string;
+  @Column({ length: 255, nullable: true })
+  resume_file?: string;
 
   @Column({ length: 255 })
   phone: string;
