@@ -29,15 +29,15 @@ export class SubscriptionService {
 
   async create(dto: CreateSubscriptionDto, file?: Express.Multer.File) {
     // 1️⃣ CAPTCHA tekshiruvi
-    const secret = config.RECAPTCHA_SECRET_KEY;
-    const captchaResponse = await axios.post(
-      `https://www.google.com/recaptcha/api/siteverify?secret=${secret}&response=${dto.captcha}`
-    );
+    // const secret = config.RECAPTCHA_SECRET_KEY;
+    // const captchaResponse = await axios.post(
+    //   `https://www.google.com/recaptcha/api/siteverify?secret=${secret}&response=${dto.captcha}`
+    // );
 
-    console.log(captchaResponse.data)
-    if (!captchaResponse.data.success || captchaResponse.data.score < 0.5) {
-      throw new BadRequestException('Captcha verification failed');
-    }
+    // console.log(captchaResponse.data)
+    // if (!captchaResponse.data.success || captchaResponse.data.score < 0.5) {
+    //   throw new BadRequestException('Captcha verification failed');
+    // }
 
     // 2️⃣ Vakansiyani tekshirish
     const vacancy = await this.vacancyRepo.findOne({
