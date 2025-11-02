@@ -45,19 +45,19 @@ export class SubscriptionService {
     });
     if (!vacancy) throw new NotFoundException('Bunday vakansiya topilmadi');
 
-    // 3️⃣ Fayl mavjudligini tekshirish
-    if (!file) {
-      throw new BadRequestException('Rezyume (PDF) fayl majburiy');
-    }
+    // // 3️⃣ Fayl mavjudligini tekshirish
+    // if (!file) {
+    //   throw new BadRequestException('Rezyume (PDF) fayl majburiy');
+    // }
 
-    // 4️⃣ Faylni saqlash
-    const fileName = await this.fileService.savePdf(file);
-    const fileUrl = this.fileService.getFileUrl(fileName);
+    // // 4️⃣ Faylni saqlash
+    // const fileName = await this.fileService.savePdf(file);
+    // const fileUrl = this.fileService.getFileUrl(fileName);
 
     // 5️⃣ Subscription yaratish va saqlash
     const subscription = this.subscriptionRepo.create({
       ...dto,
-      resume_file: fileName,
+      // resume_file: fileName,
       vacancy,
     });
 
