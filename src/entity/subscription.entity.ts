@@ -19,8 +19,9 @@ export class Subscription extends BaseEntity {
   @Column({
     type: 'enum',
     enum: Gender,
+    nullable: true,
   })
-  gender: Gender;
+  gender?: Gender;
 
   @Column({ length: 255 })
   resume_file: string;
